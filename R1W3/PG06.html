@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .title {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+        .title h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .title .subtitle {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 11px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 6px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        th {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .header-row {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+        }
+        .header-col {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            font-weight: bold;
+            position: sticky;
+            left: 0;
+            z-index: 5;
+        }
+        .corner-header {
+            background: linear-gradient(135deg, #1a252f, #2c3e50);
+            color: white;
+            font-weight: bold;
+        }
+        td:hover {
+            transform: scale(1.05);
+            z-index: 2;
+            box-shadow: 0 0 8px rgba(0,0,0,0.2);
+        }
+        .legend {
+            margin-top: 20px;
+            text-align: center;
+            padding: 10px;
+            background: #ecf0f1;
+            border-radius: 5px;
+        }
+        .legend-color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin: 0 5px;
+            border-radius: 3px;
+            vertical-align: middle;
+        }
+        .note {
+            margin-top: 15px;
+            padding: 10px;
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            font-size: 12px;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">
+            <h1>PG Dataset - (k,l)-core Distribution</h1>
+            <div class="subtitle">Core Decomposition Analysis</div>
+        </div>
+
+        <table id="coreTable">
+            <tr class="header-row">
+                <th class="corner-header">k\l</th>
+                <!-- 列标题将通过JavaScript动态生成 -->
+            </tr>
+            <!-- 行数据将通过JavaScript动态生成 -->
+        </table>
+
+        <div class="legend">
+            <strong>Color Legend：</strong>
+	
+            <span class="legend-color" style="background: linear-gradient(135deg, #f1c40f, #f39c12)"></span>
+            High Node Count (8717)
+            <span class="legend-color" style="background: linear-gradient(135deg, #27ae60, #2ecc71)"></span>
+           Medium Node Count
+<span class="legend-color" style="background: linear-gradient(135deg, #e74c3c, #c0392b)"></span>
+           
+Low Node Count（2613）
+           
+        </div>
+
+ 
+    </div>
+
+    <script>
+        // 数据映射 - 格式: {k: {l: {count: 节点数, percentage: 百分比}}}
+   const data = {
+    0: {
+        0: {count: 8717, percentage: 100},
+        1: {count: 8522, percentage: 97.763}
+    },
+    1: {
+        0: {count: 3326, percentage: 38.1553},
+        1: {count: 3226, percentage: 37.0081}
+    },
+    2: {
+        0: {count: 2720, percentage: 31.2034},
+        1: {count: 2613, percentage: 29.9759}
+    }
+};
+        // 生成表格
+        const table = document.getElementById('coreTable');
+const maxK = 3;      // k的最大值
+const maxL = 2;      // l的最大值  
+const maxCount = 8717;  // 总节点数
+
+        // 生成列标题
+        const headerRow = table.querySelector('.header-row');
+        for (let l = 0; l <= maxL; l++) {
+            const th = document.createElement('th');
+            th.textContent = l;
+            headerRow.appendChild(th);
+        }
+
+        // 生成行
+        for (let k = 0; k <= maxK; k++) {
+            const row = document.createElement('tr');
+            
+            // 行头
+            const headerCell = document.createElement('th');
+            headerCell.className = 'header-col';
+            headerCell.textContent = k;
+            row.appendChild(headerCell);
+            
+            // 数据单元格
+            for (let l = 0; l <= maxL; l++) {
+                const cell = document.createElement('td');
+                
+                if (data[k] && data[k][l]) {
+                    const item = data[k][l];
+                    const ratio = item.count / maxCount;
+                    
+                    // 从绿色到黄色到红色的渐变
+                    let r, g, b;
+                    if (ratio > 0.05) {
+                        // 绿色到黄色 (1.0-0.5)
+                        r = Math.floor(255 * (ratio *5) * 2);
+                        g = 255;
+                        b = 0;
+                    } else {
+                        // 黄色到红色 (0.5-0.0)
+                        r = 255;
+                        g = Math.floor(255 * ratio*5 * 2);
+                        b = 0;
+                    }
+                    
+                    cell.style.background = `linear-gradient(135deg, rgb(${r}, ${g}, ${b}), rgb(${Math.max(0, r-30)}, ${Math.max(0, g-30)}, ${Math.max(0, b-30)}))`;
+                    cell.style.color = ratio > 0.7 ? 'white' : 'black';
+                    cell.innerHTML = `<strong>|C<sub>${k},${l}</sub>| = ${item.count}</strong><br>${item.percentage}%`;
+                } else {
+                    cell.textContent = '-';
+                    cell.style.background = 'linear-gradient(135deg, #ecf0f1, #bdc3c7)';
+                }
+                
+                row.appendChild(cell);
+            }
+            
+            table.appendChild(row);
+        }
+    </script>
+</body>
+</html>

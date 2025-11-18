@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .title {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+        .title h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .title .subtitle {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 11px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 6px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        th {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .header-row {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+        }
+        .header-col {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            font-weight: bold;
+            position: sticky;
+            left: 0;
+            z-index: 5;
+        }
+        .corner-header {
+            background: linear-gradient(135deg, #1a252f, #2c3e50);
+            color: white;
+            font-weight: bold;
+        }
+        td:hover {
+            transform: scale(1.05);
+            z-index: 2;
+            box-shadow: 0 0 8px rgba(0,0,0,0.2);
+        }
+        .legend {
+            margin-top: 20px;
+            text-align: center;
+            padding: 10px;
+            background: #ecf0f1;
+            border-radius: 5px;
+        }
+        .legend-color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin: 0 5px;
+            border-radius: 3px;
+            vertical-align: middle;
+        }
+        .note {
+            margin-top: 15px;
+            padding: 10px;
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            font-size: 12px;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">
+            <h1>SP Dataset - (k,l)-core Distribution</h1>
+            <div class="subtitle">Core Decomposition Analysis</div>
+        </div>
+
+        <table id="coreTable">
+            <tr class="header-row">
+                <th class="corner-header">k\l</th>
+                <!-- 列标题将通过JavaScript动态生成 -->
+            </tr>
+            <!-- 行数据将通过JavaScript动态生成 -->
+        </table>
+
+        <div class="legend">
+            <strong>Color Legend：</strong>
+	
+            <span class="legend-color" style="background: linear-gradient(135deg, #f1c40f, #f39c12)"></span>
+            High Node Count (1632803)
+            <span class="legend-color" style="background: linear-gradient(135deg, #27ae60, #2ecc71)"></span>
+           Medium Node Count
+<span class="legend-color" style="background: linear-gradient(135deg, #e74c3c, #c0392b)"></span>
+           
+Low Node Count（196）
+           
+        </div>
+
+
+    </div>
+
+    <script>
+        // 数据映射 - 格式: {k: {l: {count: 节点数, percentage: 百分比}}}
+   const data = {
+    0: {
+        0: {count: 1632803, percentage: 100.0},
+        1: {count: 1506912, percentage: 92.2899},
+        2: {count: 1287252, percentage: 78.8369},
+        3: {count: 1140157, percentage: 69.8282},
+        4: {count: 1026472, percentage: 62.8656},
+        5: {count: 932190, percentage: 57.0914},
+        6: {count: 851768, percentage: 52.166},
+        7: {count: 779955, percentage: 47.7679},
+        8: {count: 715216, percentage: 43.803},
+        9: {count: 657231, percentage: 40.2517},
+        10: {count: 602994, percentage: 36.93},
+        11: {count: 552123, percentage: 33.8144},
+        12: {count: 504303, percentage: 30.8857},
+        13: {count: 458158, percentage: 28.0596},
+        14: {count: 414194, percentage: 25.3671},
+        15: {count: 371707, percentage: 22.765},
+        16: {count: 332295, percentage: 20.3512},
+        17: {count: 294232, percentage: 18.0201},
+        18: {count: 256877, percentage: 15.7323},
+        19: {count: 221725, percentage: 13.5794},
+        20: {count: 185423, percentage: 11.3561},
+        21: {count: 146567, percentage: 8.9764},
+        22: {count: 74632, percentage: 4.57079},
+        23: {count: 26286, percentage: 1.60987},
+        24: {count: 18250, percentage: 1.11771},
+        25: {count: 11346, percentage: 0.694879},
+        26: {count: 7824, percentage: 0.479176},
+        27: {count: 4710, percentage: 0.288461},
+        28: {count: 2776, percentage: 0.170014},
+        29: {count: 1187, percentage: 0.0726971},
+        30: {count: 603, percentage: 0.0369304},
+        31: {count: 524, percentage: 0.0320921},
+        32: {count: 314, percentage: 0.0192307}
+    },
+    1: {
+        0: {count: 1420762, percentage: 87.0137},
+        1: {count: 1309287, percentage: 80.1865},
+        2: {count: 1183365, percentage: 72.4745},
+        3: {count: 1074463, percentage: 65.8048},
+        4: {count: 980659, percentage: 60.0598},
+        5: {count: 898204, percentage: 55.0099},
+        6: {count: 825300, percentage: 50.545},
+        7: {count: 758610, percentage: 46.4606},
+        8: {count: 697488, percentage: 42.7172},
+        9: {count: 642071, percentage: 39.3232},
+        10: {count: 589826, percentage: 36.1235},
+        11: {count: 540634, percentage: 33.1108},
+        12: {count: 494173, percentage: 30.2653},
+        13: {count: 449202, percentage: 27.5111},
+        14: {count: 406283, percentage: 24.8825},
+        15: {count: 364779, percentage: 22.3407},
+        16: {count: 326209, percentage: 19.9785},
+        17: {count: 288854, percentage: 17.6907},
+        18: {count: 252215, percentage: 15.4468},
+        19: {count: 217688, percentage: 13.3322},
+        20: {count: 181990, percentage: 11.1459},
+        21: {count: 143852, percentage: 8.81013},
+        22: {count: 73340, percentage: 4.49166},
+        23: {count: 25907, percentage: 1.58666},
+        24: {count: 18002, percentage: 1.10252},
+        25: {count: 11189, percentage: 0.685263},
+        26: {count: 7715, percentage: 0.4725},
+        27: {count: 4650, percentage: 0.284786},
+        28: {count: 2747, percentage: 0.168238},
+        29: {count: 1178, percentage: 0.0721459},
+        30: {count: 598, percentage: 0.0366241},
+        31: {count: 520, percentage: 0.0318471},
+        32: {count: 313, percentage: 0.0191695}
+    },
+    2: {
+        0: {count: 1249427, percentage: 76.5204},
+        1: {count: 1190024, percentage: 72.8823},
+        2: {count: 1116647, percentage: 68.3883},
+        3: {count: 1033684, percentage: 63.3073},
+        4: {count: 953456, percentage: 58.3938},
+        5: {count: 879080, percentage: 53.8387},
+        6: {count: 811229, percentage: 49.6832},
+        7: {count: 747938, percentage: 45.807},
+        8: {count: 689187, percentage: 42.2088},
+        9: {count: 635402, percentage: 38.9148},
+        10: {count: 584363, percentage: 35.7889},
+        11: {count: 536112, percentage: 32.8338},
+        12: {count: 490331, percentage: 30.03},
+        13: {count: 445967, percentage: 27.313},
+        14: {count: 403506, percentage: 24.7125},
+        15: {count: 362355, percentage: 22.1922},
+        16: {count: 324145, percentage: 19.8521},
+        17: {count: 287093, percentage: 17.5828},
+        18: {count: 250675, percentage: 15.3524},
+        19: {count: 216370, percentage: 13.2514},
+        20: {count: 180921, percentage: 11.0804},
+        21: {count: 142933, percentage: 8.75384},
+        22: {count: 72948, percentage: 4.46765},
+        23: {count: 25784, percentage: 1.57912},
+        24: {count: 17918, percentage: 1.09738},
+        25: {count: 11121, percentage: 0.681099},
+        26: {count: 7680, percentage: 0.470357},
+        27: {count: 4632, percentage: 0.283684},
+        28: {count: 2732, percentage: 0.16732},
+        29: {count: 1174, percentage: 0.0719009},
+        30: {count: 596, percentage: 0.0365016},
+        31: {count: 518, percentage: 0.0317246},
+        32: {count: 312, percentage: 0.0191082}
+    },
+    3: {
+        0: {count: 1128260, percentage: 69.0996},
+        1: {count: 1090602, percentage: 66.7932},
+        2: {count: 1044120, percentage: 63.9465},
+        3: {count: 988398, percentage: 60.5338},
+        4: {count: 923917, percentage: 56.5847},
+        5: {count: 858822, percentage: 52.598},
+        6: {count: 796674, percentage: 48.7918},
+        7: {count: 737125, percentage: 45.1448},
+        8: {count: 681070, percentage: 41.7117},
+        9: {count: 629000, percentage: 38.5227},
+        10: {count: 579221, percentage: 35.474},
+        11: {count: 531962, percentage: 32.5797},
+        12: {count: 486930, percentage: 29.8217},
+        13: {count: 443075, percentage: 27.1359},
+        14: {count: 401156, percentage: 24.5685},
+        15: {count: 360252, percentage: 22.0634},
+        16: {count: 322419, percentage: 19.7464},
+        17: {count: 285641, percentage: 17.4939},
+        18: {count: 249501, percentage: 15.2805},
+        19: {count: 215324, percentage: 13.1874},
+        20: {count: 180046, percentage: 11.0268},
+        21: {count: 142252, percentage: 8.71213},
+        22: {count: 72603, percentage: 4.44653},
+        23: {count: 25624, percentage: 1.56933},
+        24: {count: 17857, percentage: 1.09364},
+        25: {count: 11079, percentage: 0.678526},
+        26: {count: 7608, percentage: 0.465947},
+        27: {count: 4617, percentage: 0.282765},
+        28: {count: 2725, percentage: 0.166891},
+        29: {count: 1170, percentage: 0.0716559},
+        30: {count: 594, percentage: 0.0363792},
+        31: {count: 515, percentage: 0.0315409},
+        32: {count: 309, percentage: 0.0189245}
+    },
+    4: {
+        0: {count: 1030439, percentage: 63.1086},
+        1: {count: 1004404, percentage: 61.5141},
+        2: {count: 972631, percentage: 59.5682},
+        3: {count: 934622, percentage: 57.2403},
+        4: {count: 888371, percentage: 54.4077},
+        5: {count: 834307, percentage: 51.0966},
+        6: {count: 779477, percentage: 47.7386},
+        7: {count: 724404, percentage: 44.3657},
+        8: {count: 671405, percentage: 41.1198},
+        9: {count: 621709, percentage: 38.0762},
+        10: {count: 573490, percentage: 35.123},
+        11: {count: 527338, percentage: 32.2965},
+        12: {count: 483058, percentage: 29.5846},
+        13: {count: 440069, percentage: 26.9518},
+        14: {count: 398560, percentage: 24.4096},
+        15: {count: 357941, percentage: 21.9219},
+        16: {count: 320511, percentage: 19.6295},
+        17: {count: 284192, percentage: 17.4052},
+        18: {count: 248238, percentage: 15.2032},
+        19: {count: 214248, percentage: 13.1215},
+        20: {count: 178976, percentage: 10.9613},
+        21: {count: 141384, percentage: 8.65897},
+        22: {count: 71390, percentage: 4.37224},
+        23: {count: 25410, percentage: 1.55622},
+        24: {count: 17769, percentage: 1.08825},
+        25: {count: 11030, percentage: 0.675525},
+        26: {count: 7568, percentage: 0.463497},
+        27: {count: 4431, percentage: 0.271374},
+        28: {count: 2715, percentage: 0.166278},
+        29: {count: 1160, percentage: 0.0710435},
+        30: {count: 592, percentage: 0.0362567},
+        31: {count: 512, percentage: 0.0313571},
+        32: {count: 309, percentage: 0.0189245}
+    },
+    5: {
+        0: {count: 946009, percentage: 57.9377},
+        1: {count: 927265, percentage: 56.7898},
+        2: {count: 904315, percentage: 55.3842},
+        3: {count: 877224, percentage: 53.725},
+        4: {count: 844553, percentage: 51.7241},
+        5: {count: 804347, percentage: 49.2617},
+        6: {count: 757902, percentage: 46.4172},
+        7: {count: 708746, percentage: 43.4067},
+        8: {count: 659565, percentage: 40.3946},
+        9: {count: 612312, percentage: 37.5007},
+        10: {count: 566511, percentage: 34.6956},
+        11: {count: 521559, percentage: 31.9426},
+        12: {count: 478610, percentage: 29.3122},
+        13: {count: 436382, percentage: 26.7259},
+        14: {count: 395488, percentage: 24.2214},
+        15: {count: 355471, percentage: 21.7706},
+        16: {count: 318479, percentage: 19.505},
+        17: {count: 282405, percentage: 17.2957},
+        18: {count: 246951, percentage: 15.1244},
+        19: {count: 213009, percentage: 13.0456},
+        20: {count: 177852, percentage: 10.8924},
+        21: {count: 140643, percentage: 8.61359},
+        22: {count: 70882, percentage: 4.34112},
+        23: {count: 24130, percentage: 1.47783},
+        24: {count: 17686, percentage: 1.08317},
+        25: {count: 10855, percentage: 0.664808},
+        26: {count: 7466, percentage: 0.457251},
+        27: {count: 4407, percentage: 0.269904},
+        28: {count: 2708, percentage: 0.16585},
+        29: {count: 1156, percentage: 0.0707985},
+        30: {count: 590, percentage: 0.0361342},
+        31: {count: 512, percentage: 0.0313571},
+        32: {count: 309, percentage: 0.0189245}
+    },
+    6: {
+        0: {count: 871695, percentage: 53.3864},
+        1: {count: 857885, percentage: 52.5406},
+        2: {count: 840653, percentage: 51.4853},
+        3: {count: 820408, percentage: 50.2454},
+        4: {count: 796261, percentage: 48.7665},
+        5: {count: 766988, percentage: 46.9737},
+        6: {count: 730982, percentage: 44.7685},
+        7: {count: 689313, percentage: 42.2165},
+        8: {count: 645400, percentage: 39.5271},
+        9: {count: 601562, percentage: 36.8423},
+        10: {count: 558012, percentage: 34.1751},
+        11: {count: 514775, percentage: 31.5271},
+        12: {count: 473217, percentage: 28.9819},
+        13: {count: 432103, percentage: 26.4639},
+        14: {count: 391780, percentage: 23.9943},
+        15: {count: 352642, percentage: 21.5973},
+        16: {count: 316028, percentage: 19.3549},
+        17: {count: 280591, percentage: 17.1846},
+        18: {count: 245339, percentage: 15.0256},
+        19: {count: 211759, percentage: 12.969},
+        20: {count: 176746, percentage: 10.8247},
+        21: {count: 139723, percentage: 8.55725},
+        22: {count: 70496, percentage: 4.31748},
+        23: {count: 24029, percentage: 1.47164},
+        24: {count: 17529, percentage: 1.07355},
+        25: {count: 10801, percentage: 0.6615},
+        26: {count: 7436, percentage: 0.455413},
+        27: {count: 4392, percentage: 0.268985},
+        28: {count: 2697, percentage: 0.165176},
+        29: {count: 1114, percentage: 0.0682262},
+        30: {count: 575, percentage: 0.0352155},
+        31: {count: 510, percentage: 0.0312346},
+        32: {count: 307, percentage: 0.018802}
+    },
+    7: {
+        0: {count: 805239, percentage: 49.3164},
+        1: {count: 794772, percentage: 48.6753},
+        2: {count: 781476, percentage: 47.861},
+        3: {count: 766100, percentage: 46.9193},
+        4: {count: 747928, percentage: 45.8064},
+        5: {count: 725997, percentage: 44.4632},
+        6: {count: 698965, percentage: 42.8077},
+        7: {count: 665750, percentage: 40.7734},
+        8: {count: 628118, percentage: 38.4687},
+        9: {count: 588561, percentage: 36.0461},
+        10: {count: 547857, percentage: 33.5532},
+        11: {count: 506791, percentage: 31.0381},
+        12: {count: 466864, percentage: 28.5928},
+        13: {count: 426917, percentage: 26.1463},
+        14: {count: 387821, percentage: 23.7519},
+        15: {count: 349485, percentage: 21.404},
+        16: {count: 313436, percentage: 19.1962},
+        17: {count: 278160, percentage: 17.0357},
+        18: {count: 243423, percentage: 14.9083},
+        19: {count: 210363, percentage: 12.8836},
+        20: {count: 175484, percentage: 10.7474},
+        21: {count: 138214, percentage: 8.46483},
+        22: {count: 50937, percentage: 3.1196},
+        23: {count: 23893, percentage: 1.46331},
+        24: {count: 17428, percentage: 1.06737},
+        25: {count: 10727, percentage: 0.656968},
+        26: {count: 7408, percentage: 0.453698},
+        27: {count: 4370, percentage: 0.267638},
+        28: {count: 2679, percentage: 0.164074},
+        29: {count: 1113, percentage: 0.068165},
+        30: {count: 574, percentage: 0.0351543},
+        31: {count: 507, percentage: 0.0310509},
+        32: {count: 305, percentage: 0.0186795}
+    },
+    8: {
+        0: {count: 745089, percentage: 45.6325},
+        1: {count: 736958, percentage: 45.1345},
+        2: {count: 726611, percentage: 44.5008},
+        3: {count: 714424, percentage: 43.7545},
+        4: {count: 700352, percentage: 42.8926},
+        5: {count: 683505, percentage: 41.8608},
+        6: {count: 663040, percentage: 40.6075},
+        7: {count: 637508, percentage: 39.0438},
+        8: {count: 606972, percentage: 37.1736},
+        9: {count: 572448, percentage: 35.0592},
+        10: {count: 535463, percentage: 32.7941},
+        11: {count: 497314, percentage: 30.4577},
+        12: {count: 459154, percentage: 28.1206},
+        13: {count: 420687, percentage: 25.7647},
+        14: {count: 382952, percentage: 23.4537},
+        15: {count: 345585, percentage: 21.1651},
+        16: {count: 310272, percentage: 19.0024},
+        17: {count: 275514, percentage: 16.8737},
+        18: {count: 241283, percentage: 14.7772},
+        19: {count: 208438, percentage: 12.7657},
+        20: {count: 173621, percentage: 10.6333},
+        21: {count: 135843, percentage: 8.31962},
+        22: {count: 50199, percentage: 3.07441},
+        23: {count: 23609, percentage: 1.44592},
+        24: {count: 17302, percentage: 1.05965},
+        25: {count: 10631, percentage: 0.651089},
+        26: {count: 7355, percentage: 0.450452},
+        27: {count: 4324, percentage: 0.264821},
+        28: {count: 2669, percentage: 0.163461},
+        29: {count: 1110, percentage: 0.0679813},
+        30: {count: 536, percentage: 0.032827},
+        31: {count: 345, percentage: 0.0211293},
+        32: {count: 301, percentage: 0.0184346}
+    },
+    9: {
+        0: {count: 690298, percentage: 42.2769},
+        1: {count: 683921, percentage: 41.8863},
+        2: {count: 675715, percentage: 41.3837},
+        3: {count: 666101, percentage: 40.7949},
+        4: {count: 655061, percentage: 40.1188},
+        5: {count: 641618, percentage: 39.2955},
+        6: {count: 625466, percentage: 38.3063},
+        7: {count: 605592, percentage: 37.0891},
+        8: {count: 581305, percentage: 35.6017},
+        9: {count: 552713, percentage: 33.8506},
+        10: {count: 520573, percentage: 31.8822},
+        11: {count: 485512, percentage: 29.7349},
+        12: {count: 449865, percentage: 27.5517},
+        13: {count: 413197, percentage: 25.306},
+        14: {count: 376939, percentage: 23.0854},
+        15: {count: 340874, percentage: 20.8766},
+        16: {count: 306253, percentage: 18.7563},
+        17: {count: 272343, percentage: 16.6795},
+        18: {count: 238545, percentage: 14.6095},
+        19: {count: 206108, percentage: 12.623},
+        20: {count: 171893, percentage: 10.5275},
+        21: {count: 132999, percentage: 8.14544},
+        22: {count: 48420, percentage: 2.96545},
+        23: {count: 23414, percentage: 1.43398},
+        24: {count: 17115, percentage: 1.0482},
+        25: {count: 10463, percentage: 0.6408},
+        26: {count: 7273, percentage: 0.44543},
+        27: {count: 4261, percentage: 0.260962},
+        28: {count: 2626, percentage: 0.160828},
+        29: {count: 1098, percentage: 0.0672463},
+        30: {count: 531, percentage: 0.0325208},
+        31: {count: 345, percentage: 0.0211293},
+        32: {count: 301, percentage: 0.0184346}
+    },
+    10: {
+        0: {count: 638762, percentage: 39.1206},
+        1: {count: 633708, percentage: 38.8111},
+        2: {count: 627243, percentage: 38.4151},
+        3: {count: 619608, percentage: 37.9475},
+        4: {count: 610619, percentage: 37.397},
+        5: {count: 599792, percentage: 36.7339},
+        6: {count: 587046, percentage: 35.9533},
+        7: {count: 571357, percentage: 34.9924},
+        8: {count: 552109, percentage: 33.8136},
+        9: {count: 529346, percentage: 32.4195},
+        10: {count: 502021, percentage: 30.746},
+        11: {count: 471614, percentage: 28.8837},
+        12: {count: 438504, percentage: 26.8559},
+        13: {count: 404501, percentage: 24.7734},
+        14: {count: 369751, percentage: 22.6452},
+        15: {count: 335075, percentage: 20.5215},
+        16: {count: 301654, percentage: 18.4746},
+        17: {count: 268352, percentage: 16.4351},
+        18: {count: 235349, percentage: 14.4138},
+        19: {count: 203432, percentage: 12.4591},
+        20: {count: 169560, percentage: 10.3846},
+        21: {count: 129710, percentage: 7.94401},
+        22: {count: 33098, percentage: 2.02707},
+        23: {count: 23205, percentage: 1.42118},
+        24: {count: 16751, percentage: 1.0259},
+        25: {count: 10049, percentage: 0.615445},
+        26: {count: 6945, percentage: 0.425342},
+        27: {count: 4221, percentage: 0.258513},
+        28: {count: 2614, percentage: 0.160093},
+        29: {count: 1092, percentage: 0.0668789},
+        30: {count: 529, percentage: 0.0323983},
+        31: {count: 340, percentage: 0.0208231},
+        32: {count: 301, percentage: 0.0184346}
+    },
+    11: {
+        0: {count: 591102, percentage: 36.2017},
+        1: {count: 587065, percentage: 35.9544},
+        2: {count: 581785, percentage: 35.6311},
+        3: {count: 575440, percentage: 35.2425},
+        4: {count: 568212, percentage: 34.7998},
+        5: {count: 559345, percentage: 34.2567},
+        6: {count: 549129, percentage: 33.6311},
+        7: {count: 536532, percentage: 32.8596},
+        8: {count: 521330, percentage: 31.9285},
+        9: {count: 502681, percentage: 30.7864},
+        10: {count: 480564, percentage: 29.4318},
+        11: {count: 455001, percentage: 27.8663},
+        12: {count: 425288, percentage: 26.0465},
+        13: {count: 393542, percentage: 24.1022},
+        14: {count: 361068, percentage: 22.1134},
+        15: {count: 328144, percentage: 20.097},
+        16: {count: 296041, percentage: 18.1308},
+        17: {count: 263601, percentage: 16.1441},
+        18: {count: 231518, percentage: 14.1792},
+        19: {count: 200349, percentage: 12.2702},
+        20: {count: 166813, percentage: 10.2164},
+        21: {count: 126825, percentage: 7.76732},
+        22: {count: 32616, percentage: 1.99755},
+        23: {count: 22894, percentage: 1.40213},
+        24: {count: 16557, percentage: 1.01402},
+        25: {count: 9974, percentage: 0.610851},
+        26: {count: 6849, percentage: 0.419463},
+        27: {count: 4160, percentage: 0.254777},
+        28: {count: 2594, percentage: 0.158868},
+        29: {count: 1051, percentage: 0.0643678},
+        30: {count: 523, percentage: 0.0320308},
+        31: {count: 338, percentage: 0.0207006},
+        32: {count: 299, percentage: 0.0183121}
+    },
+    12: {
+        0: {count: 546125, percentage: 33.4471},
+        1: {count: 542865, percentage: 33.2474},
+        2: {count: 538585, percentage: 32.9853},
+        3: {count: 533464, percentage: 32.6717},
+        4: {count: 527293, percentage: 32.2937},
+        5: {count: 519994, percentage: 31.8467},
+        6: {count: 511500, percentage: 31.3265},
+        7: {count: 501271, percentage: 30.7},
+        8: {count: 489008, percentage: 29.949},
+        9: {count: 473737, percentage: 29.0137},
+        10: {count: 455884, percentage: 27.9203},
+        11: {count: 434593, percentage: 26.6164},
+        12: {count: 409179, percentage: 25.0599},
+        13: {count: 381009, percentage: 23.3347},
+        14: {count: 351160, percentage: 21.5066},
+        15: {count: 320119, percentage: 19.6055},
+        16: {count: 289212, percentage: 17.7126},
+        17: {count: 257880, percentage: 15.7937},
+        18: {count: 227319, percentage: 13.922},
+        19: {count: 196349, percentage: 12.0253},
+        20: {count: 163746, percentage: 10.0285},
+        21: {count: 123789, percentage: 7.58138},
+        22: {count: 32040, percentage: 1.96227},
+        23: {count: 20968, percentage: 1.28417},
+        24: {count: 16392, percentage: 1.00392},
+        25: {count: 9797, percentage: 0.600011},
+        26: {count: 5990, percentage: 0.366854},
+        27: {count: 4132, percentage: 0.253062},
+        28: {count: 2571, percentage: 0.157459},
+        29: {count: 1045, percentage: 0.0640004},
+        30: {count: 523, percentage: 0.0320308},
+        31: {count: 328, percentage: 0.0200882},
+        32: {count: 297, percentage: 0.0181896}
+    },
+    13: {
+        0: {count: 503753, percentage: 30.852},
+        1: {count: 501139, percentage: 30.6919},
+        2: {count: 497497, percentage: 30.4689},
+        3: {count: 493209, percentage: 30.2063},
+        4: {count: 488234, percentage: 29.9016},
+        5: {count: 482227, percentage: 29.5337},
+        6: {count: 475086, percentage: 29.0963},
+        7: {count: 466784, percentage: 28.5879},
+        8: {count: 456432, percentage: 27.9539},
+        9: {count: 444012, percentage: 27.1932},
+        10: {count: 429829, percentage: 26.3246},
+        11: {count: 411963, percentage: 25.2304},
+        12: {count: 390636, percentage: 23.9243},
+        13: {count: 365907, percentage: 22.4097},
+        14: {count: 339419, percentage: 20.7875},
+        15: {count: 310192, percentage: 18.9975},
+        16: {count: 281248, percentage: 17.2249},
+        17: {count: 250973, percentage: 15.3707},
+        18: {count: 221542, percentage: 13.5682},
+        19: {count: 191175, percentage: 11.7084},
+        20: {count: 159723, percentage: 9.78214},
+        21: {count: 119523, percentage: 7.32011},
+        22: {count: 29366, percentage: 1.7985},
+        23: {count: 20498, percentage: 1.25539},
+        24: {count: 16126, percentage: 0.987627},
+        25: {count: 9433, percentage: 0.577718},
+        26: {count: 5927, percentage: 0.362995},
+        27: {count: 3209, percentage: 0.196533},
+        28: {count: 2511, percentage: 0.153785},
+        29: {count: 1029, percentage: 0.0630205},
+        30: {count: 514, percentage: 0.0314796},
+        31: {count: 324, percentage: 0.0198432},
+        32: {count: 291, percentage: 0.0178221}
+    },
+    14: {
+        0: {count: 462707, percentage: 28.3382},
+        1: {count: 460553, percentage: 28.2063},
+        2: {count: 457518, percentage: 28.0204},
+        3: {count: 453979, percentage: 27.8037},
+        4: {count: 449782, percentage: 27.5466},
+        5: {count: 444646, percentage: 27.2321},
+        6: {count: 439052, percentage: 26.8895},
+        7: {count: 432058, percentage: 26.4611},
+        8: {count: 423633, percentage: 25.9451},
+        9: {count: 413528, percentage: 25.3263},
+        10: {count: 401712, percentage: 24.6026},
+        11: {count: 386595, percentage: 23.6768},
+        12: {count: 368894, percentage: 22.5927},
+        13: {count: 348475, percentage: 21.3421},
+        14: {count: 324838, percentage: 19.8945},
+        15: {count: 298619, percentage: 18.2887},
+        16: {count: 271691, percentage: 16.6395},
+        17: {count: 243370, percentage: 14.905},
+        18: {count: 214905, percentage: 13.1617},
+        19: {count: 186102, percentage: 11.3977},
+        20: {count: 154476, percentage: 9.46079},
+        21: {count: 112648, percentage: 6.89906},
+        22: {count: 28484, percentage: 1.74448},
+        23: {count: 19458, percentage: 1.19169},
+        24: {count: 15884, percentage: 0.972806},
+        25: {count: 9154, percentage: 0.560631},
+        26: {count: 5832, percentage: 0.357177},
+        27: {count: 3152, percentage: 0.193042},
+        28: {count: 2285, percentage: 0.139943},
+        29: {count: 1007, percentage: 0.0616731},
+        30: {count: 503, percentage: 0.0308059},
+        31: {count: 318, percentage: 0.0194757},
+        32: {count: 287, percentage: 0.0175771}
+    },
+    15: {
+        0: {count: 423308, percentage: 25.9252},
+        1: {count: 421539, percentage: 25.8169},
+        2: {count: 419019, percentage: 25.6626},
+        3: {count: 416082, percentage: 25.4827},
+        4: {count: 412540, percentage: 25.2658},
+        5: {count: 408283, percentage: 25.005},
+        6: {count: 403352, percentage: 24.703},
+        7: {count: 397421, percentage: 24.3398},
+        8: {count: 390504, percentage: 23.9162},
+        9: {count: 382170, percentage: 23.4058},
+        10: {count: 372118, percentage: 22.7901},
+        11: {count: 359939, percentage: 22.0442},
+        12: {count: 345529, percentage: 21.1617},
+        13: {count: 328037, percentage: 20.0904},
+        14: {count: 307564, percentage: 18.8366},
+        15: {count: 284912, percentage: 17.4493},
+        16: {count: 260621, percentage: 15.9616},
+        17: {count: 234139, percentage: 14.3397},
+        18: {count: 207410, percentage: 12.7027},
+        19: {count: 179392, percentage: 10.9868},
+        20: {count: 148549, percentage: 9.09779},
+        21: {count: 106737, percentage: 6.53704},
+        22: {count: 26627, percentage: 1.63075},
+        23: {count: 19027, percentage: 1.1653},
+        24: {count: 15617, percentage: 0.956453},
+        25: {count: 8854, percentage: 0.542258},
+        26: {count: 5628, percentage: 0.344683},
+        27: {count: 3112, percentage: 0.190592},
+        28: {count: 2206, percentage: 0.135105},
+        29: {count: 984, percentage: 0.0602645},
+        30: {count: 498, percentage: 0.0304997},
+        31: {count: 300, percentage: 0.0183733},
+        32: {count: 274, percentage: 0.016781}
+    },
+    16: {
+        0: {count: 385395, percentage: 23.6033},
+        1: {count: 383917, percentage: 23.5128},
+        2: {count: 381806, percentage: 23.3835},
+        3: {count: 379301, percentage: 23.2301},
+        4: {count: 376195, percentage: 23.0398},
+        5: {count: 372551, percentage: 22.8167},
+        6: {count: 368176, percentage: 22.5487},
+        7: {count: 363086, percentage: 22.237},
+        8: {count: 357177, percentage: 21.8751},
+        9: {count: 350367, percentage: 21.458},
+        10: {count: 341666, percentage: 20.9251},
+        11: {count: 331172, percentage: 20.2824},
+        12: {count: 318879, percentage: 19.5295},
+        13: {count: 304471, percentage: 18.6471},
+        14: {count: 287439, percentage: 17.604},
+        15: {count: 268396, percentage: 16.4377},
+        16: {count: 246540, percentage: 15.0992},
+        17: {count: 223121, percentage: 13.6649},
+        18: {count: 198114, percentage: 12.1334},
+        19: {count: 171065, percentage: 10.4768},
+        20: {count: 141167, percentage: 8.64568},
+        21: {count: 98082, percentage: 6.00697},
+        22: {count: 25931, percentage: 1.58813},
+        23: {count: 18433, percentage: 1.12892},
+        24: {count: 15050, percentage: 0.921728},
+        25: {count: 8621, percentage: 0.527988},
+        26: {count: 5344, percentage: 0.32729},
+        27: {count: 3081, percentage: 0.188694},
+        28: {count: 2169, percentage: 0.132839},
+        29: {count: 966, percentage: 0.0591621},
+        30: {count: 492, percentage: 0.0301322},
+        31: {count: 295, percentage: 0.0180671},
+        32: {count: 274, percentage: 0.016781}
+    },
+    17: {
+        0: {count: 346368, percentage: 21.2131},
+        1: {count: 345156, percentage: 21.1389},
+        2: {count: 343365, percentage: 21.0292},
+        3: {count: 341282, percentage: 20.9016},
+        4: {count: 338603, percentage: 20.7375},
+        5: {count: 335537, percentage: 20.5498},
+        6: {count: 332052, percentage: 20.3363},
+        7: {count: 327948, percentage: 20.085},
+        8: {count: 322887, percentage: 19.775},
+        9: {count: 317233, percentage: 19.4287},
+        10: {count: 310055, percentage: 18.9891},
+        11: {count: 301356, percentage: 18.4564},
+        12: {count: 291561, percentage: 17.8565},
+        13: {count: 279456, percentage: 17.1151},
+        14: {count: 265529, percentage: 16.2622},
+        15: {count: 249208, percentage: 15.2626},
+        16: {count: 230986, percentage: 14.1466},
+        17: {count: 209661, percentage: 12.8406},
+        18: {count: 186500, percentage: 11.4221},
+        19: {count: 160634, percentage: 9.83793},
+        20: {count: 128432, percentage: 7.86574},
+        21: {count: 74631, percentage: 4.57073},
+        22: {count: 23776, percentage: 1.45615},
+        23: {count: 17865, percentage: 1.09413},
+        24: {count: 14075, percentage: 0.862015},
+        25: {count: 8072, percentage: 0.494365},
+        26: {count: 4576, percentage: 0.280254},
+        27: {count: 3045, percentage: 0.186489},
+        28: {count: 2142, percentage: 0.131185},
+        29: {count: 864, percentage: 0.0529151},
+        30: {count: 486, percentage: 0.0297648},
+        31: {count: 294, percentage: 0.0180058},
+        32: {count: 271, percentage: 0.0165972}
+    },
+    18: {
+        0: {count: 309726, percentage: 18.969},
+        1: {count: 308712, percentage: 18.9069},
+        2: {count: 307276, percentage: 18.8189},
+        3: {count: 305446, percentage: 18.7068},
+        4: {count: 303274, percentage: 18.5738},
+        5: {count: 300784, percentage: 18.4213},
+        6: {count: 297662, percentage: 18.2301},
+        7: {count: 293963, percentage: 18.0036},
+        8: {count: 289796, percentage: 17.7484},
+        9: {count: 284508, percentage: 17.4245},
+        10: {count: 278473, percentage: 17.0549},
+        11: {count: 271527, percentage: 16.6295},
+        12: {count: 263187, percentage: 16.1187},
+        13: {count: 253219, percentage: 15.5082},
+        14: {count: 241379, percentage: 14.7831},
+        15: {count: 227553, percentage: 13.9363},
+        16: {count: 211672, percentage: 12.9637},
+        17: {count: 193750, percentage: 11.8661},
+        18: {count: 173037, percentage: 10.5975},
+        19: {count: 148139, percentage: 9.07268},
+        20: {count: 116347, percentage: 7.1256},
+        21: {count: 38837, percentage: 2.37855},
+        22: {count: 22944, percentage: 1.40519},
+        23: {count: 17325, percentage: 1.06106},
+        24: {count: 13442, percentage: 0.823247},
+        25: {count: 7024, percentage: 0.43018},
+        26: {count: 4228, percentage: 0.258941},
+        27: {count: 2966, percentage: 0.181651},
+        28: {count: 1950, percentage: 0.119427},
+        29: {count: 861, percentage: 0.0527314},
+        30: {count: 329, percentage: 0.0201494},
+        31: {count: 291, percentage: 0.0178221},
+        32: {count: 267, percentage: 0.0163522}
+    },
+    19: {
+        0: {count: 272886, percentage: 16.7127},
+        1: {count: 272072, percentage: 16.6629},
+        2: {count: 270872, percentage: 16.5894},
+        3: {count: 269349, percentage: 16.4961},
+        4: {count: 267412, percentage: 16.3775},
+        5: {count: 265277, percentage: 16.2467},
+        6: {count: 262686, percentage: 16.088},
+        7: {count: 259680, percentage: 15.9039},
+        8: {count: 256083, percentage: 15.6836},
+        9: {count: 251509, percentage: 15.4035},
+        10: {count: 246142, percentage: 15.0748},
+        11: {count: 240076, percentage: 14.7033},
+        12: {count: 232922, percentage: 14.2652},
+        13: {count: 224765, percentage: 13.7656},
+        14: {count: 214588, percentage: 13.1423},
+        15: {count: 203766, percentage: 12.4795},
+        16: {count: 189934, percentage: 11.6324},
+        17: {count: 174699, percentage: 10.6993},
+        18: {count: 155162, percentage: 9.5028},
+        19: {count: 130706, percentage: 8.00501},
+        20: {count: 98060, percentage: 6.00562},
+        21: {count: 26561, percentage: 1.62671},
+        22: {count: 21392, percentage: 1.31014},
+        23: {count: 15694, percentage: 0.961169},
+        24: {count: 12609, percentage: 0.77223},
+        25: {count: 6011, percentage: 0.36814},
+        26: {count: 4114, percentage: 0.251959},
+        27: {count: 2665, percentage: 0.163216},
+        28: {count: 1796, percentage: 0.109995},
+        29: {count: 777, percentage: 0.0475869},
+        30: {count: 319, percentage: 0.019537},
+        31: {count: 276, percentage: 0.0169034},
+        32: {count: 263, percentage: 0.0161073}
+    },
+    20: {
+        0: {count: 235313, percentage: 14.4116},
+        1: {count: 234668, percentage: 14.3721},
+        2: {count: 233681, percentage: 14.3116},
+        3: {count: 232397, percentage: 14.233},
+        4: {count: 230861, percentage: 14.1389},
+        5: {count: 229085, percentage: 14.0302},
+        6: {count: 226683, percentage: 13.8831},
+        7: {count: 223981, percentage: 13.7176},
+        8: {count: 220827, percentage: 13.5244},
+        9: {count: 216927, percentage: 13.2856},
+        10: {count: 212872, percentage: 13.0372},
+        11: {count: 207772, percentage: 12.7249},
+        12: {count: 201677, percentage: 12.3516},
+        13: {count: 194452, percentage: 11.9091},
+        14: {count: 185819, percentage: 11.3804},
+        15: {count: 176501, percentage: 10.8097},
+        16: {count: 165295, percentage: 10.1234},
+        17: {count: 150707, percentage: 9.22996},
+        18: {count: 132084, percentage: 8.0894},
+        19: {count: 106516, percentage: 6.52351},
+        20: {count: 67117, percentage: 4.11054},
+        21: {count: 24558, percentage: 1.50404},
+        22: {count: 18406, percentage: 1.12726},
+        23: {count: 14642, percentage: 0.89674},
+        24: {count: 11608, percentage: 0.710925},
+        25: {count: 5568, percentage: 0.341009},
+        26: {count: 3925, percentage: 0.240384},
+        27: {count: 2468, percentage: 0.151151},
+        28: {count: 1131, percentage: 0.0692674},
+        29: {count: 768, percentage: 0.0470357},
+        30: {count: 307, percentage: 0.018802},
+        31: {count: 274, percentage: 0.016781},
+        32: {count: 262, percentage: 0.016046}
+    },
+    21: {
+        0: {count: 197138, percentage: 12.0736},
+        1: {count: 196615, percentage: 12.0416},
+        2: {count: 195812, percentage: 11.9924},
+        3: {count: 194748, percentage: 11.9272},
+        4: {count: 193518, percentage: 11.8519},
+        5: {count: 191942, percentage: 11.7554},
+        6: {count: 189865, percentage: 11.6282},
+        7: {count: 187784, percentage: 11.5007},
+        8: {count: 185056, percentage: 11.3336},
+        9: {count: 181850, percentage: 11.1373},
+        10: {count: 178400, percentage: 10.926},
+        11: {count: 173942, percentage: 10.653},
+        12: {count: 168313, percentage: 10.3082},
+        13: {count: 161562, percentage: 9.89476},
+        14: {count: 153679, percentage: 9.41197},
+        15: {count: 143693, percentage: 8.80039},
+        16: {count: 133611, percentage: 8.18292},
+        17: {count: 119636, percentage: 7.32703},
+        18: {count: 98110, percentage: 6.00869},
+        19: {count: 62873, percentage: 3.85062},
+        20: {count: 25078, percentage: 1.53589},
+        21: {count: 20905, percentage: 1.28031},
+        22: {count: 16440, percentage: 1.00686},
+        23: {count: 13174, percentage: 0.806833},
+        24: {count: 6876, percentage: 0.421116},
+        25: {count: 4405, percentage: 0.269781},
+        26: {count: 2914, percentage: 0.178466},
+        27: {count: 2207, percentage: 0.135166},
+        28: {count: 1032, percentage: 0.0632042},
+        29: {count: 704, percentage: 0.043116},
+        30: {count: 299, percentage: 0.0183121},
+        31: {count: 270, percentage: 0.016536},
+        32: {count: 252, percentage: 0.0154336}
+    },
+    22: {
+        0: {count: 150028, percentage: 9.18837},
+        1: {count: 149624, percentage: 9.16363},
+        2: {count: 148955, percentage: 9.12266},
+        3: {count: 148138, percentage: 9.07262},
+        4: {count: 147210, percentage: 9.01578},
+        5: {count: 145913, percentage: 8.93635},
+        6: {count: 144517, percentage: 8.85085},
+        7: {count: 142739, percentage: 8.74196},
+        8: {count: 139594, percentage: 8.54935},
+        9: {count: 137062, percentage: 8.39428},
+        10: {count: 134402, percentage: 8.23137},
+        11: {count: 130013, percentage: 7.96256},
+        12: {count: 125485, percentage: 7.68525},
+        13: {count: 118206, percentage: 7.23945},
+        14: {count: 110795, percentage: 6.78557},
+        15: {count: 83290, percentage: 5.10104},
+        16: {count: 74476, percentage: 4.56124},
+        17: {count: 37379, percentage: 2.28925},
+        18: {count: 27192, percentage: 1.66536},
+        19: {count: 23653, percentage: 1.44861},
+        20: {count: 20269, percentage: 1.24136},
+        21: {count: 16711, percentage: 1.02345},
+        22: {count: 13807, percentage: 0.845601},
+        23: {count: 11265, percentage: 0.689918},
+        24: {count: 5530, percentage: 0.338681},
+        25: {count: 4125, percentage: 0.252633},
+        26: {count: 2587, percentage: 0.158439},
+        27: {count: 2041, percentage: 0.125},
+        28: {count: 865, percentage: 0.0529764},
+        29: {count: 620, percentage: 0.0379715},
+        30: {count: 296, percentage: 0.0181283},
+        31: {count: 267, percentage: 0.0163522},
+        32: {count: 250, percentage: 0.0153111}
+    },
+    23: {
+        0: {count: 38078, percentage: 2.33206},
+        1: {count: 37972, percentage: 2.32557},
+        2: {count: 37812, percentage: 2.31577},
+        3: {count: 37598, percentage: 2.30267},
+        4: {count: 37338, percentage: 2.28674},
+        5: {count: 37028, percentage: 2.26776},
+        6: {count: 36539, percentage: 2.23781},
+        7: {count: 35921, percentage: 2.19996},
+        8: {count: 35376, percentage: 2.16658},
+        9: {count: 33012, percentage: 2.0218},
+        10: {count: 32407, percentage: 1.98475},
+        11: {count: 31073, percentage: 1.90305},
+        12: {count: 30518, percentage: 1.86906},
+        13: {count: 25864, percentage: 1.58402},
+        14: {count: 25141, percentage: 1.53974},
+        15: {count: 24057, percentage: 1.47336},
+        16: {count: 23076, percentage: 1.41328},
+        17: {count: 21228, percentage: 1.3001},
+        18: {count: 19398, percentage: 1.18802},
+        19: {count: 17142, percentage: 1.04985},
+        20: {count: 15148, percentage: 0.92773},
+        21: {count: 13420, percentage: 0.8219},
+        22: {count: 11567, percentage: 0.708414},
+        23: {count: 8855, percentage: 0.542319},
+        24: {count: 4175, percentage: 0.255695},
+        25: {count: 3030, percentage: 0.18557},
+        26: {count: 2451, percentage: 0.15011},
+        27: {count: 1057, percentage: 0.0647353},
+        28: {count: 831, percentage: 0.0508941},
+        29: {count: 310, percentage: 0.0189858},
+        30: {count: 290, percentage: 0.0177609},
+        31: {count: 262, percentage: 0.016046},
+        32: {count: 247, percentage: 0.0151274}
+    },
+    24: {
+        0: {count: 19841, percentage: 1.21515},
+        1: {count: 19818, percentage: 1.21374},
+        2: {count: 19789, percentage: 1.21196},
+        3: {count: 19723, percentage: 1.20792},
+        4: {count: 19650, percentage: 1.20345},
+        5: {count: 19567, percentage: 1.19837},
+        6: {count: 19456, percentage: 1.19157},
+        7: {count: 19333, percentage: 1.18404},
+        8: {count: 19098, percentage: 1.16965},
+        9: {count: 18435, percentage: 1.12904},
+        10: {count: 18226, percentage: 1.11624},
+        11: {count: 18026, percentage: 1.10399},
+        12: {count: 17568, percentage: 1.07594},
+        13: {count: 17318, percentage: 1.06063},
+        14: {count: 17076, percentage: 1.04581},
+        15: {count: 16423, percentage: 1.00582},
+        16: {count: 15074, percentage: 0.923198},
+        17: {count: 14398, percentage: 0.881797},
+        18: {count: 12972, percentage: 0.794462},
+        19: {count: 12039, percentage: 0.737321},
+        20: {count: 10271, percentage: 0.629041},
+        21: {count: 9470, percentage: 0.579984},
+        22: {count: 8109, percentage: 0.496631},
+        23: {count: 3978, percentage: 0.24363},
+        24: {count: 2963, percentage: 0.181467},
+        25: {count: 2554, percentage: 0.156418},
+        26: {count: 1953, percentage: 0.11961},
+        27: {count: 956, percentage: 0.0585496},
+        28: {count: 611, percentage: 0.0374203},
+        29: {count: 294, percentage: 0.0180058},
+        30: {count: 266, percentage: 0.016291},
+        31: {count: 257, percentage: 0.0157398}
+    },
+    25: {
+        0: {count: 12735, percentage: 0.779947},
+        1: {count: 12728, percentage: 0.779518},
+        2: {count: 12714, percentage: 0.778661},
+        3: {count: 12688, percentage: 0.777069},
+        4: {count: 12640, percentage: 0.774129},
+        5: {count: 12556, percentage: 0.768984},
+        6: {count: 12500, percentage: 0.765555},
+        7: {count: 12437, percentage: 0.761696},
+        8: {count: 12329, percentage: 0.755082},
+        9: {count: 12237, percentage: 0.749447},
+        10: {count: 12159, percentage: 0.74467},
+        11: {count: 12099, percentage: 0.740996},
+        12: {count: 11870, percentage: 0.726971},
+        13: {count: 10536, percentage: 0.645271},
+        14: {count: 10364, percentage: 0.634737},
+        15: {count: 10076, percentage: 0.617098},
+        16: {count: 9426, percentage: 0.577289},
+        17: {count: 9137, percentage: 0.55959},
+        18: {count: 8760, percentage: 0.536501},
+        19: {count: 7254, percentage: 0.444267},
+        20: {count: 6527, percentage: 0.399742},
+        21: {count: 3852, percentage: 0.235913},
+        22: {count: 3048, percentage: 0.186673},
+        23: {count: 2886, percentage: 0.176751},
+        24: {count: 2533, percentage: 0.155132},
+        25: {count: 2192, percentage: 0.134248},
+        26: {count: 1062, percentage: 0.0650415},
+        27: {count: 687, percentage: 0.0420749},
+        28: {count: 360, percentage: 0.022048},
+        29: {count: 282, percentage: 0.0172709},
+        30: {count: 255, percentage: 0.0156173},
+        31: {count: 239, percentage: 0.0146374}
+    },
+    26: {
+        0: {count: 4316, percentage: 0.264331},
+        1: {count: 4312, percentage: 0.264086},
+        2: {count: 4309, percentage: 0.263902},
+        3: {count: 4303, percentage: 0.263535},
+        4: {count: 4286, percentage: 0.262493},
+        5: {count: 4249, percentage: 0.260227},
+        6: {count: 4231, percentage: 0.259125},
+        7: {count: 4214, percentage: 0.258084},
+        8: {count: 4197, percentage: 0.257043},
+        9: {count: 4171, percentage: 0.25545},
+        10: {count: 4147, percentage: 0.25398},
+        11: {count: 4133, percentage: 0.253123},
+        12: {count: 4104, percentage: 0.251347},
+        13: {count: 4066, percentage: 0.24902},
+        14: {count: 3782, percentage: 0.231626},
+        15: {count: 3711, percentage: 0.227278},
+        16: {count: 3405, percentage: 0.208537},
+        17: {count: 3316, percentage: 0.203086},
+        18: {count: 3227, percentage: 0.197636},
+        19: {count: 2926, percentage: 0.179201},
+        20: {count: 2753, percentage: 0.168606},
+        21: {count: 2647, percentage: 0.162114},
+        22: {count: 2506, percentage: 0.153478},
+        23: {count: 2373, percentage: 0.145333},
+        24: {count: 2096, percentage: 0.128368},
+        25: {count: 821, percentage: 0.0502816},
+        26: {count: 715, percentage: 0.0437897},
+        27: {count: 588, percentage: 0.0360117},
+        28: {count: 353, percentage: 0.0216193},
+        29: {count: 270, percentage: 0.016536},
+        30: {count: 244, percentage: 0.0149436}
+    },
+    27: {
+        0: {count: 2762, percentage: 0.169157},
+        1: {count: 2762, percentage: 0.169157},
+        2: {count: 2761, percentage: 0.169096},
+        3: {count: 2755, percentage: 0.168728},
+        4: {count: 2752, percentage: 0.168545},
+        5: {count: 2745, percentage: 0.168116},
+        6: {count: 2738, percentage: 0.167687},
+        7: {count: 2729, percentage: 0.167136},
+        8: {count: 2722, percentage: 0.166707},
+        9: {count: 2701, percentage: 0.165421},
+        10: {count: 2694, percentage: 0.164992},
+        11: {count: 2675, percentage: 0.163829},
+        12: {count: 2656, percentage: 0.162665},
+        13: {count: 2634, percentage: 0.161318},
+        14: {count: 2614, percentage: 0.160093},
+        15: {count: 2592, percentage: 0.158745},
+        16: {count: 2290, percentage: 0.14025},
+        17: {count: 2195, percentage: 0.134431},
+        18: {count: 2161, percentage: 0.132349},
+        19: {count: 2151, percentage: 0.131737},
+        20: {count: 1287, percentage: 0.0788215},
+        21: {count: 1249, percentage: 0.0764942},
+        22: {count: 1163, percentage: 0.0712272},
+        23: {count: 990, percentage: 0.0606319},
+        24: {count: 811, percentage: 0.0496692},
+        25: {count: 713, percentage: 0.0436672},
+        26: {count: 604, percentage: 0.0369916},
+        27: {count: 354, percentage: 0.0216805},
+        28: {count: 336, percentage: 0.0205781},
+        29: {count: 258, percentage: 0.015801},
+        30: {count: 231, percentage: 0.0141475}
+    },
+    28: {
+        0: {count: 1343, percentage: 0.0822512},
+        1: {count: 1343, percentage: 0.0822512},
+        2: {count: 1342, percentage: 0.08219},
+        3: {count: 1341, percentage: 0.0821287},
+        4: {count: 1341, percentage: 0.0821287},
+        5: {count: 1337, percentage: 0.0818837},
+        6: {count: 1334, percentage: 0.0817},
+        7: {count: 1331, percentage: 0.0815163},
+        8: {count: 1318, percentage: 0.0807201},
+        9: {count: 1313, percentage: 0.0804139},
+        10: {count: 1312, percentage: 0.0803526},
+        11: {count: 1307, percentage: 0.0800464},
+        12: {count: 1299, percentage: 0.0795564},
+        13: {count: 1286, percentage: 0.0787603},
+        14: {count: 1279, percentage: 0.0783316},
+        15: {count: 1273, percentage: 0.0779641},
+        16: {count: 1056, percentage: 0.0646741},
+        17: {count: 1024, percentage: 0.0627142},
+        18: {count: 1010, percentage: 0.0618568},
+        19: {count: 981, percentage: 0.0600807},
+        20: {count: 829, percentage: 0.0507716},
+        21: {count: 807, percentage: 0.0494242},
+        22: {count: 793, percentage: 0.0485668},
+        23: {count: 701, percentage: 0.0429323},
+        24: {count: 670, percentage: 0.0410337},
+        25: {count: 372, percentage: 0.0227829},
+        26: {count: 349, percentage: 0.0213743},
+        27: {count: 337, percentage: 0.0206394},
+        28: {count: 327, percentage: 0.0200269},
+        29: {count: 255, percentage: 0.0156173},
+        30: {count: 196, percentage: 0.0120039}
+    },
+    29: {
+        0: {count: 854, percentage: 0.0523027},
+        1: {count: 854, percentage: 0.0523027},
+        2: {count: 853, percentage: 0.0522415},
+        3: {count: 851, percentage: 0.052119},
+        4: {count: 851, percentage: 0.052119},
+        5: {count: 850, percentage: 0.0520577},
+        6: {count: 848, percentage: 0.0519352},
+        7: {count: 847, percentage: 0.051874},
+        8: {count: 845, percentage: 0.0517515},
+        9: {count: 842, percentage: 0.0515678},
+        10: {count: 842, percentage: 0.0515678},
+        11: {count: 841, percentage: 0.0515065},
+        12: {count: 457, percentage: 0.0279887},
+        13: {count: 452, percentage: 0.0276825},
+        14: {count: 443, percentage: 0.0271313},
+        15: {count: 432, percentage: 0.0264576},
+        16: {count: 428, percentage: 0.0262126},
+        17: {count: 422, percentage: 0.0258451},
+        18: {count: 417, percentage: 0.0255389},
+        19: {count: 415, percentage: 0.0254164},
+        20: {count: 413, percentage: 0.0252939},
+        21: {count: 402, percentage: 0.0246202},
+        22: {count: 383, percentage: 0.0234566},
+        23: {count: 365, percentage: 0.0223542},
+        24: {count: 348, percentage: 0.021313},
+        25: {count: 335, percentage: 0.0205169},
+        26: {count: 329, percentage: 0.0201494},
+        27: {count: 246, percentage: 0.0150661},
+        28: {count: 240, percentage: 0.0146987},
+        29: {count: 202, percentage: 0.0123714}
+    },
+    30: {
+        0: {count: 402, percentage: 0.0246202},
+        1: {count: 402, percentage: 0.0246202},
+        2: {count: 401, percentage: 0.024559},
+        3: {count: 401, percentage: 0.024559},
+        4: {count: 401, percentage: 0.024559},
+        5: {count: 401, percentage: 0.024559},
+        6: {count: 401, percentage: 0.024559},
+        7: {count: 401, percentage: 0.024559},
+        8: {count: 400, percentage: 0.0244978},
+        9: {count: 398, percentage: 0.0243753},
+        10: {count: 398, percentage: 0.0243753},
+        11: {count: 397, percentage: 0.024314},
+        12: {count: 393, percentage: 0.024069},
+        13: {count: 389, percentage: 0.0238241},
+        14: {count: 388, percentage: 0.0237628},
+        15: {count: 380, percentage: 0.0232729},
+        16: {count: 373, percentage: 0.0228442},
+        17: {count: 371, percentage: 0.0227217},
+        18: {count: 370, percentage: 0.0226604},
+        19: {count: 366, percentage: 0.0224154},
+        20: {count: 358, percentage: 0.0219255},
+        21: {count: 352, percentage: 0.021558},
+        22: {count: 336, percentage: 0.0205781},
+        23: {count: 330, percentage: 0.0202106},
+        24: {count: 327, percentage: 0.0200269},
+        25: {count: 255, percentage: 0.0156173},
+        26: {count: 243, percentage: 0.0148824},
+        27: {count: 232, percentage: 0.0142087},
+        28: {count: 229, percentage: 0.014025}
+    },
+    31: {
+        0: {count: 280, percentage: 0.0171484},
+        1: {count: 280, percentage: 0.0171484},
+        2: {count: 279, percentage: 0.0170872},
+        3: {count: 279, percentage: 0.0170872},
+        4: {count: 279, percentage: 0.0170872},
+        5: {count: 279, percentage: 0.0170872},
+        6: {count: 279, percentage: 0.0170872},
+        7: {count: 279, percentage: 0.0170872},
+        8: {count: 278, percentage: 0.0170259},
+        9: {count: 277, percentage: 0.0169647},
+        10: {count: 277, percentage: 0.0169647},
+        11: {count: 275, percentage: 0.0168422},
+        12: {count: 274, percentage: 0.016781},
+        13: {count: 272, percentage: 0.0166585},
+        14: {count: 270, percentage: 0.016536},
+        15: {count: 266, percentage: 0.016291},
+        16: {count: 265, percentage: 0.0162298},
+        17: {count: 262, percentage: 0.016046},
+        18: {count: 255, percentage: 0.0156173},
+        19: {count: 252, percentage: 0.0154336},
+        20: {count: 250, percentage: 0.0153111},
+        21: {count: 244, percentage: 0.0149436},
+        22: {count: 238, percentage: 0.0145762},
+        23: {count: 236, percentage: 0.0144537},
+        24: {count: 223, percentage: 0.0136575},
+        25: {count: 221, percentage: 0.013535},
+        26: {count: 216, percentage: 0.0132288},
+        27: {count: 214, percentage: 0.0131063}
+    }
+
+};
+        // 生成表格
+        const table = document.getElementById('coreTable');
+const maxK = 33;      // k的最大值
+const maxL = 33;      // l的最大值  
+const maxCount = 1632803;  // 总节点数
+
+        // 生成列标题
+        const headerRow = table.querySelector('.header-row');
+        for (let l = 0; l <= maxL; l++) {
+            const th = document.createElement('th');
+            th.textContent = l;
+            headerRow.appendChild(th);
+        }
+
+        // 生成行
+        for (let k = 0; k <= maxK; k++) {
+            const row = document.createElement('tr');
+            
+            // 行头
+            const headerCell = document.createElement('th');
+            headerCell.className = 'header-col';
+            headerCell.textContent = k;
+            row.appendChild(headerCell);
+            
+            // 数据单元格
+            for (let l = 0; l <= maxL; l++) {
+                const cell = document.createElement('td');
+                
+                if (data[k] && data[k][l]) {
+                    const item = data[k][l];
+                    const ratio = item.count / maxCount;
+                    
+                    // 从绿色到黄色到红色的渐变
+                    let r, g, b;
+                    if (ratio > 0.05) {
+                        // 绿色到黄色 (1.0-0.5)
+                        r = Math.floor(255 * (ratio *5) * 2);
+                        g = 255;
+                        b = 0;
+                    } else {
+                        // 黄色到红色 (0.5-0.0)
+                        r = 255;
+                        g = Math.floor(255 * ratio*5 * 2);
+                        b = 0;
+                    }
+                    
+                    cell.style.background = `linear-gradient(135deg, rgb(${r}, ${g}, ${b}), rgb(${Math.max(0, r-30)}, ${Math.max(0, g-30)}, ${Math.max(0, b-30)}))`;
+                    cell.style.color = ratio > 0.7 ? 'white' : 'black';
+                    cell.innerHTML = `<strong>|C<sub>${k},${l}</sub>| = ${item.count}</strong><br>${item.percentage}%`;
+                } else {
+                    cell.textContent = '-';
+                    cell.style.background = 'linear-gradient(135deg, #ecf0f1, #bdc3c7)';
+                }
+                
+                row.appendChild(cell);
+            }
+            
+            table.appendChild(row);
+        }
+    </script>
+</body>
+</html>
